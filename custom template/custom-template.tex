@@ -1,0 +1,96 @@
+\documentclass[12pt]{article}
+\usepackage[UTF8,heading = true]{ctex}
+\usepackage{geometry}
+\usepackage{amsfonts, amssymb}
+\xeCJKsetup{CJKmath=true} 
+\geometry{
+  a4paper,
+  left=20mm,
+  right=20mm,
+  top=25mm,
+  bottom=25mm
+}
+
+\usepackage{framed}
+\usepackage{xcolor}
+\usepackage{color}
+\usepackage{soul}
+\usepackage{ulem}
+\usepackage{fontspec}
+\usepackage{unicode-math}
+\usepackage{float}
+\setmathfont{XITS Math}
+
+\usepackage{microtype}
+\usepackage{hyperref}
+\usepackage{listings} % Use listings instead of minted
+
+\definecolor{bg}{rgb}{0.95,0.95,0.95}
+
+\makeatletter
+\newenvironment{Shaded}{
+  \def\FrameCommand{\colorbox{bg}}
+  \MakeFramed {\advance\hsize-\width \FrameRestore}}
+{\endMakeFramed}
+\makeatother
+
+\usepackage{float} % Add this line
+\usepackage{placeins} % Add this line
+\usepackage{longtable}
+\usepackage{booktabs}
+
+\usepackage{amsmath}
+% \usepackage{amssymb}
+  % \usepackage{mathspec}
+% \usepackage{unicode-math}
+
+\usepackage{booktabs}
+\usepackage{caption}
+\usepackage{graphicx}
+\usepackage{adjustbox}
+\setkeys{Gin}{width=\linewidth, keepaspectratio}
+
+\lstset{
+    basicstyle=\ttfamily,
+    backgroundcolor=\color{bg},
+    frame=single,
+    framesep=1mm,
+    numbers=left,
+    numberstyle=\tiny\color{gray},
+    keywordstyle=\color{blue},
+    commentstyle=\color{green},
+    stringstyle=\color{red},
+    showstringspaces=false,
+    breaklines=true,
+    prebreak=\raisebox{0ex}[0ex][0ex]{\ensuremath{\hookleftarrow}},
+    postbreak=\raisebox{0ex}[0ex][0ex]{\ensuremath{\hookrightarrow}},
+    escapeinside={(*@}{@*)},
+}
+
+\newcommand{\passthrough}[1]{#1}
+\newcommand{\pandocbounded}[1]{#1}
+
+
+\providecommand{\tightlist}{
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+
+\begin{document}
+
+\title{$title$}
+\author{$author$}
+\date{$date$}
+
+$if(using_title)$
+\maketitle
+$endif$
+
+$if(using_table_of_content)$
+\tableofcontents 
+$endif$
+
+$body$
+
+\end{document}
+
+
+
