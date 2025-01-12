@@ -21,18 +21,37 @@
 \usepackage{float}
 \setmathfont{XITS Math}
 
+\usepackage{fancybox}
 \usepackage{microtype}
 \usepackage{hyperref}
 \usepackage{listings} % Use listings instead of minted
+\usepackage[most]{tcolorbox} % Load tcolorbox with most options
+\usepackage{mdframed} % Add mdframed
+\usepackage{tikz} % Add TikZ
 
-\definecolor{bg}{rgb}{0.95,0.95,0.95}
+\definecolor{bg}{rgb}{0.92,0.95,1.0} % Lighter blue fill
+\definecolor{borderblue}{rgb}{0.4,0.4,1.0} % Blue border
+\definecolor{commentcolor}{rgb}{0.4,0.85,0.4} % Softer green comment color
 
-\makeatletter
-\newenvironment{Shaded}{
-  \def\FrameCommand{\colorbox{bg}}
-  \MakeFramed {\advance\hsize-\width \FrameRestore}}
-{\endMakeFramed}
-\makeatother
+\newenvironment{Shaded}{%
+  \begin{tcolorbox}[
+    enhanced,
+    arc=8pt,
+    outer arc=8pt,
+    colback=bg,
+    colframe=borderblue,
+    boxrule=1pt,
+    left=10pt,
+    right=10pt,
+    top=8pt,
+    bottom=8pt,
+    boxsep=0pt,
+    width=\linewidth,
+    breakable
+  ]%
+}{%
+  \end{tcolorbox}%
+}
 
 \usepackage{float} % Add this line
 \usepackage{placeins} % Add this line
@@ -50,22 +69,50 @@
 \usepackage{adjustbox}
 \setkeys{Gin}{width=\linewidth, keepaspectratio}
 
+\newfontfamily\maplemonofont{MapleMono-NF-CN}[
+    Path = C:/Users/Admin/AppData/Local/Microsoft/Windows/Fonts/,
+    Extension = .ttf,
+    UprightFont = *-Regular,
+    BoldFont = *-Bold,
+    ItalicFont = *-Italic,
+    BoldItalicFont = *-BoldItalic
+]
+
+\newfontfamily\consolasfont{Consola}[
+    Extension = .ttf,
+    UprightFont = *,
+    BoldFont = *b,
+    ItalicFont = *i,
+    BoldItalicFont = *z
+]
+
 \lstset{
-    basicstyle=\ttfamily,
+    basicstyle=\consolasfont,  % Changed to use Consolas
+    % basicstyle=\maplemonofont\small,
     backgroundcolor=\color{bg},
     frame=single,
     framesep=1mm,
+    rulecolor=\color{borderblue}, % Blue border
     numbers=left,
     numberstyle=\tiny\color{gray},
     keywordstyle=\color{blue},
-    commentstyle=\color{green},
+    % commentstyle=\color{green},
+    commentstyle=\color{commentcolor}\itshape,
     stringstyle=\color{red},
     showstringspaces=false,
-    breaklines=true,
+    breaklines=true,  % Ensure lines break within margins
+    breakatwhitespace=true, % Allow breaking at whitespace
     prebreak=\raisebox{0ex}[0ex][0ex]{\ensuremath{\hookleftarrow}},
     postbreak=\raisebox{0ex}[0ex][0ex]{\ensuremath{\hookrightarrow}},
     escapeinside={(*@}{@*)},
+    literate={-}{{\textendash}}1
 }
+
+\usepackage{etoolbox} % Add etoolbox package
+
+\makeatletter
+\g@addto@macro\texttt{\allowbreak}
+\makeatother
 
 \newcommand{\passthrough}[1]{#1}
 \newcommand{\pandocbounded}[1]{#1}
@@ -81,7 +128,7 @@
 \date{$date$}
 
 $if(using_title)$
-\maketitle
+    \maketitle
 $endif$
 
 $if(using_table_of_content)$
@@ -91,6 +138,3 @@ $endif$
 $body$
 
 \end{document}
-
-
-
