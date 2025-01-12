@@ -19,6 +19,7 @@ Check out "examples/" folder or "README.pdf" in this repo's root (this is the pd
 ![标题和目录](pics/example1.jpg)
 ![代码块](pics/example2.jpg)
 ![图片展示](pics/example3.jpg)
+![数学公式](pics/example4.jpg)
 
 We recommend using the VSCode extension [vscode-pandoc](https://marketplace.visualstudio.com/items?itemName=ChrisChinchilla.vscode-pandoc) for markdown editing and conversion.
 
