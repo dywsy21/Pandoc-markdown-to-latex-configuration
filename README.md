@@ -42,6 +42,8 @@ Fill in the configuration as follows:
 
 Replace `path\to\custom-template.tex` and `path\to\image-wrapper.lua` with the actual paths on your computer.
 
+4. Install `Charter` font. This configuration uses the `Charter` font for the text. You can download the font from [here](https://www.fontforestry.com/charter-font-free-download/) and install all the `.ttf` files. If you do not want to use `Charter`, you can change the font in the `custom-template.tex` file.
+
 ### Conversion
 
 1. Open the markdown file you want to convert in VSCode and add this yaml header at the beginning of the file:

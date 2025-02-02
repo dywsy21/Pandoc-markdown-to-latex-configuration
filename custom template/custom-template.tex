@@ -16,7 +16,9 @@
 \usepackage{color}
 \usepackage{soul}
 \usepackage{ulem}
-\usepackage{fontspec}
+\usepackage{fontspec}    
+\setmainfont{Charter}
+
 \usepackage{unicode-math}
 \usepackage{float}
 \setmathfont{XITS Math}
@@ -32,6 +34,48 @@
 \definecolor{bg}{rgb}{0.92,0.95,1.0} % Lighter blue fill
 \definecolor{borderblue}{rgb}{0.4,0.4,1.0} % Blue border
 \definecolor{commentcolor}{rgb}{0.4,0.85,0.4} % Softer green comment color
+
+% \makeatletter
+% \newenvironment{Shaded}{
+%   \def\FrameCommand{\fcolorbox{borderblue}{bg}} % Blue border and light blue fill
+%   \MakeFramed {\advance\hsize-\width \FrameRestore \setlength{\FrameRule}{1pt} \cornersize{0.4em}} % Rounded corners
+% }
+% {\endMakeFramed}
+% \makeatother
+
+% \newenvironment{Shaded}{
+%   \begin{tcolorbox}[enhanced, colback=bg, colframe=borderblue, boxrule=1pt, arc=8pt, rounded corners=all]
+% }{
+%   \end{tcolorbox}
+% }
+
+% \newenvironment{Shaded}{
+%   \begin{mdframed}[backgroundcolor=bg, linecolor=borderblue, linewidth=1pt, roundcorner=10pt]
+% }{
+%   \end{mdframed}
+% }
+
+% \newenvironment{Shaded}{
+%   \begin{Sbox}
+%     \begin{minipage}{\linewidth}
+%       % ...content...
+%     \end{minipage}
+%   \end{Sbox}
+%   \ovalbox{\TheSbox}
+% }
+
+% \newenvironment{Shaded}{%
+%     \begin{tikzpicture}[remember picture]
+%     \node[inner sep=10pt, outer sep=0pt] (content) \bgroup\begin{minipage}{\linewidth-2pt}
+% }{%
+%     \end{minipage}\egroup;
+%     \begin{scope}[on background layer]
+%         \fill[bg] (content.south west) rectangle (content.north east);
+%         \draw[borderblue, line width=1pt, rounded corners=8pt] 
+%             (content.south west) rectangle (content.north east);
+%     \end{scope}
+%     \end{tikzpicture}
+% }
 
 \newenvironment{Shaded}{%
   \begin{tcolorbox}[
@@ -69,14 +113,14 @@
 \usepackage{adjustbox}
 \setkeys{Gin}{width=\linewidth, keepaspectratio}
 
-% \newfontfamily\maplemonofont{MapleMono-NF-CN}[
-%     Path = C:/Users/Admin/AppData/Local/Microsoft/Windows/Fonts/,
-%     Extension = .ttf,
-%     UprightFont = *-Regular,
-%     BoldFont = *-Bold,
-%     ItalicFont = *-Italic,
-%     BoldItalicFont = *-BoldItalic
-% ]
+\newfontfamily\maplemonofont{MapleMono-NF-CN}[
+    Path = C:/Users/Admin/AppData/Local/Microsoft/Windows/Fonts/,
+    Extension = .ttf,
+    UprightFont = *-Regular,
+    BoldFont = *-Bold,
+    ItalicFont = *-Italic,
+    BoldItalicFont = *-BoldItalic
+]
 
 \newfontfamily\consolasfont{Consola}[
     Extension = .ttf,
@@ -86,17 +130,39 @@
     BoldItalicFont = *z
 ]
 
+% \lstset{
+%     basicstyle=\consolasfont,  % Changed to use Consolas
+%     % basicstyle=\maplemonofont\small,
+%     backgroundcolor=\color{bg},
+%     frame=single,
+%     framesep=1mm,
+%     rulecolor=\color{borderblue}, % Blue border
+%     numbers=left,
+%     numberstyle=\tiny\color{gray},
+%     keywordstyle=\color{blue},
+%     % commentstyle=\color{green},
+%     commentstyle=\color{commentcolor}\itshape,
+%     stringstyle=\color{red},
+%     showstringspaces=false,
+%     breaklines=true,  % Ensure lines break within margins
+%     breakatwhitespace=true, % Allow breaking at whitespace
+%     prebreak=\raisebox{0ex}[0ex][0ex]{\ensuremath{\hookleftarrow}},
+%     postbreak=\raisebox{0ex}[0ex][0ex]{\ensuremath{\hookrightarrow}},
+%     escapeinside={(*@}{@*)},
+%     literate={-}{{\textendash}}1
+% }
+
 \lstset{
-    basicstyle=\consolasfont,  % Changed to use Consolas
-    % basicstyle=\maplemonofont\small,
+    basicstyle=\consolasfont\footnotesize,  % Changed to use Consolas
     backgroundcolor=\color{bg},
+    lineskip=1.5pt,
     frame=single,
     framesep=1mm,
     rulecolor=\color{borderblue}, % Blue border
     numbers=left,
-    numberstyle=\tiny\color{gray},
+    numberstyle=\small\color{gray}, % Changed from \tiny to \small
     keywordstyle=\color{blue},
-    % commentstyle=\color{green},
+    commentstyle=\color{green},
     commentstyle=\color{commentcolor}\itshape,
     stringstyle=\color{red},
     showstringspaces=false,
@@ -108,6 +174,7 @@
     literate={-}{{\textendash}}1
 }
 
+
 \usepackage{etoolbox} % Add etoolbox package
 
 \makeatletter
@@ -117,6 +184,17 @@
 \newcommand{\passthrough}[1]{#1}
 \newcommand{\pandocbounded}[1]{#1}
 
+\captionsetup[figure]{justification=centering}
+\captionsetup[table]{justification=centering}
+
+% 调整浮动体参数
+\setcounter{topnumber}{6}% 每页顶部最大浮动体数量
+\setcounter{bottomnumber}{3}% 每页底部最大浮动体数量
+\setcounter{totalnumber}{6}% 每页浮动体总数量
+\renewcommand{\topfraction}{0.95}% 页面顶部浮动体比例
+\renewcommand{\bottomfraction}{0.5}% 页面底部浮动体比例
+\renewcommand{\floatpagefraction}{0.9}% 浮动体页比例
+\renewcommand{\textfraction}{0.05}% 正文比例
 
 \providecommand{\tightlist}{
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
