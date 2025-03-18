@@ -39,7 +39,7 @@ This usage tutorial is aimed at using vscode-pandoc to convert markdown files to
 Fill in the configuration as follows:
 
 ```
---citeproc --listing --from=markdown+smart  --verbose --pdf-engine=xelatex --pdf-engine-opt="-shell-escape" --template="path\to\custom-template.tex" --lua-filter="path\to\image-wrapper.lua" 
+--citeproc --listing --from=markdown+smart  --verbose --pdf-engine=xelatex --pdf-engine-opt="-shell-escape" --template="path\to\custom-template.tex" --lua-filter="path\to\image-wrapper.lua" --lua-filter="path\to\mermaid.lua"
 ```
 
 Replace `path\to\custom-template.tex` and `path\to\image-wrapper.lua` with the actual paths on your computer.
@@ -94,15 +94,13 @@ If typing `header` or `yaml` does not work, it's because VSCode's user snippet f
 
 3. **[Optional]** To use the mermaid feature, add the following code block in your markdown file:
 
-```
-
+<pre>
 ```mermaid
 %% caption: ...
 
 
 ```
-
-```
+</pre>
 
 We recommend adding the following snippet in your markdown.json snippet file:
 
