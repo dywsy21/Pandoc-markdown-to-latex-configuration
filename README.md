@@ -10,7 +10,9 @@ using_table_of_content: true
 
 This repository contains our personal configurations for pandoc's markdown -> latex -> pdf conversion. The configurations include a custom latex template and lua filters for pandoc.
 
-This configuration is especially designed for academic writing, aimed to make writing _elegant and aesthetically great papers and reports_ way easier and much more efficient: **it has full support over Chinese characters and latex math formulas.**
+This configuration is especially designed for academic writing, aimed to make writing _elegant and aesthetically great papers and reports_ way easier and much more efficient: **it has full support over Chinese characters and latex math formulas.**,
+
+Moreover, we implemented **mermaid support** for pandoc. Check below for how to enable and use it.
 
 You can find the custom template latex file in "custom template/", and filter scripts in "lua filters/".
 
@@ -43,6 +45,8 @@ Fill in the configuration as follows:
 Replace `path\to\custom-template.tex` and `path\to\image-wrapper.lua` with the actual paths on your computer.
 
 4. Install `Charter` font. This configuration uses the `Charter` font for the text. You can download the font from [here](https://www.fontforestry.com/charter-font-free-download/) and install all the `.ttf` files. If you do not want to use `Charter`, you can change the font in the `custom-template.tex` file.
+
+5. **[Optional]** To enable the mermaid integration feature we have implemented, install `mmdc` on your system via `npm install -g @mermaid-js/mermaid-cli`. You can then write mermaid code blocks in markdown files that will be converted to charts in the final pdf.
 
 ### Conversion
 
@@ -87,6 +91,35 @@ In this way, you can insert the yaml header by typing `header` or `yaml` and pre
 If typing `header` or `yaml` does not work, it's because VSCode's user snippet for markdown is defaultly disabled. Navigate through the settings and enable it.
 
 2. Hit `F1` to open the command palette, type `pandoc` to find the command `Pandoc Render`, choose `pdf` option. The conversion will start and the PDF file will be generated in the same folder as the markdown file with the same file name.
+
+3. **[Optional]** To use the mermaid feature, add the following code block in your markdown file:
+
+```
+
+```mermaid
+%% caption: ...
+
+
+```
+
+```
+
+We recommend adding the following snippet in your markdown.json snippet file:
+
+```json
+  "mermaid": {
+    "prefix": "mermaid\r",
+    "description": "Insert mermaid code block.\r",
+    "body": [
+      "\r",
+      "```mermaid\r",
+      "%% caption: ${1:INPUT_CAPTION}\r",
+      "\r",
+      "\r",
+      "```\r",
+    ]
+  }
+```
 
 ## Known issues
 
