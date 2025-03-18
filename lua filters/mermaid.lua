@@ -16,15 +16,66 @@ end
 -- Global flag to track if mmdc is available (checked only once)
 local mmdc_available = nil
 
+-- Track all images generated in the current run
+local generated_images = {}
+
 local output_dir = "mermaid-images"
 
 -- Function to create a unique filename based on content
 local function get_filename(code)
-    local hash = ""
-    for i = 1, math.min(#code, 10) do
-        hash = hash .. string.format("%02x", string.byte(code, i))
+    -- Generate two separate hashes to create a 16-character identifier
+    local hash1 = 5381
+    local hash2 = 52711  -- Different seed for second hash
+    
+    for i = 1, #code do
+        local byte = string.byte(code, i)
+        -- Update both hashes with different algorithms
+        hash1 = ((hash1 * 33) + byte) % 0xFFFFFFFF
+        hash2 = ((hash2 * 31) + byte) % 0xFFFFFFFF  -- Using 31 as multiplier for variation
     end
-    return "mermaid-" .. hash .. ".png"
+    
+    -- Convert to hex string with fixed length (16 characters)
+    local hash_str = string.format("%08x%08x", hash1, hash2)
+    return "mermaid-" .. hash_str .. ".png"
+end
+
+-- Get list of all files in a directory
+local function get_all_files_in_dir(dir)
+    local files = {}
+    local command = 'dir /b "' .. dir .. '"'
+    local handle = io.popen(command)
+    
+    if not handle then return files end
+    
+    for file in handle:lines() do
+        table.insert(files, file)
+    end
+    handle:close()
+    
+    return files
+end
+
+-- Delete unused mermaid images
+local function cleanup_unused_images()
+    local all_files = get_all_files_in_dir(output_dir)
+    
+    for _, file in ipairs(all_files) do
+        if file:match("^mermaid%-.*%.png$") and not generated_images[file] then
+            local filepath = output_dir .. "\\" .. file
+            io.stderr:write("Removing unused mermaid image: " .. filepath .. "\n")
+            os.remove(filepath)
+        end
+    end
+end
+
+-- Check if a file exists at the given path
+local function file_exists(path)
+    local f = io.open(path, "r")
+    if f then
+        f:close()
+        return true
+    end
+    return false
 end
 
 local function ensure_directory_exists(dir)
@@ -147,6 +198,17 @@ function CodeBlock(block)
         -- Fix windows path for OS execution
         local os_image_path = output_dir .. "\\" .. image_file
         
+        -- Track this image as being used in the current document
+        generated_images[image_file] = true
+        
+        -- Check if image already exists
+        if file_exists(os_image_path) then
+            io.stderr:write("Image already exists: " .. os_image_path .. ", skipping generation\n")
+            local caption = {pandoc.Str(caption_text)}
+            local attr = pandoc.Attr("", {"mermaid-diagram"}, {})
+            return pandoc.Para{pandoc.Image(caption, image_path, "", attr)}
+        end
+        
         local tmp_file = os.getenv("TEMP") .. "\\mermaid-temp-" .. os.time() .. ".mmd"
         
         local f = io.open(tmp_file, "w")
@@ -185,9 +247,16 @@ end
 
 -- Handle operations at the end of processing
 function Pandoc(doc)
-    -- Only update gitignore if we're actually processing Mermaid diagrams
+    -- Only update gitignore and clean up if we're actually processing Mermaid diagrams
     if mmdc_available then
         update_gitignore()
+        
+        -- Clean up unused mermaid images
+        cleanup_unused_images()
+        
+        io.stderr:write("Mermaid processing complete. Generated " .. 
+                       (next(generated_images) and #generated_images or 0) .. 
+                       " diagrams.\n")
     end
     return doc
 end
