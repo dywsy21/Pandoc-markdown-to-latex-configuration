@@ -39,8 +39,10 @@ This usage tutorial is aimed at using vscode-pandoc to convert markdown files to
 Fill in the configuration as follows:
 
 ```
---citeproc --listing --from=markdown+smart  --verbose --pdf-engine=xelatex --pdf-engine-opt="-shell-escape" --template="path\to\custom-template.tex" --lua-filter="path\to\image-wrapper.lua" --lua-filter="path\to\mermaid.lua"
+--citeproc --listing --from=markdown+smart  --verbose --pdf-engine=xelatex --pdf-engine-opt="-shell-escape" --template="path\to\custom-template.tex" --lua-filter="path\to\mermaid.lua" --lua-filter="path\to\image-wrapper.lua" 
 ```
+
+**Note that mermaid.lua has to be applied before image-wrapper.lua.**
 
 Replace `path\to\custom-template.tex` and `path\to\image-wrapper.lua` with the actual paths on your computer.
 
