@@ -17,6 +17,7 @@
 \usepackage{soul}
 \usepackage{ulem}
 \usepackage{fontspec}    
+\usepackage{csquotes} % Added for proper quote support
 \setmainfont{Charter}
 
 \usepackage{unicode-math}
@@ -42,48 +43,6 @@
 \definecolor{bg}{rgb}{0.92,0.95,1.0} % Lighter blue fill
 \definecolor{borderblue}{rgb}{0.4,0.4,1.0} % Blue border
 \definecolor{commentcolor}{rgb}{0.4,0.85,0.4} % Softer green comment color
-
-% \makeatletter
-% \newenvironment{Shaded}{
-%   \def\FrameCommand{\fcolorbox{borderblue}{bg}} % Blue border and light blue fill
-%   \MakeFramed {\advance\hsize-\width \FrameRestore \setlength{\FrameRule}{1pt} \cornersize{0.4em}} % Rounded corners
-% }
-% {\endMakeFramed}
-% \makeatother
-
-% \newenvironment{Shaded}{
-%   \begin{tcolorbox}[enhanced, colback=bg, colframe=borderblue, boxrule=1pt, arc=8pt, rounded corners=all]
-% }{
-%   \end{tcolorbox}
-% }
-
-% \newenvironment{Shaded}{
-%   \begin{mdframed}[backgroundcolor=bg, linecolor=borderblue, linewidth=1pt, roundcorner=10pt]
-% }{
-%   \end{mdframed}
-% }
-
-% \newenvironment{Shaded}{
-%   \begin{Sbox}
-%     \begin{minipage}{\linewidth}
-%       % ...content...
-%     \end{minipage}
-%   \end{Sbox}
-%   \ovalbox{\TheSbox}
-% }
-
-% \newenvironment{Shaded}{%
-%     \begin{tikzpicture}[remember picture]
-%     \node[inner sep=10pt, outer sep=0pt] (content) \bgroup\begin{minipage}{\linewidth-2pt}
-% }{%
-%     \end{minipage}\egroup;
-%     \begin{scope}[on background layer]
-%         \fill[bg] (content.south west) rectangle (content.north east);
-%         \draw[borderblue, line width=1pt, rounded corners=8pt] 
-%             (content.south west) rectangle (content.north east);
-%     \end{scope}
-%     \end{tikzpicture}
-% }
 
 \newenvironment{Shaded}{%
   \begin{tcolorbox}[
@@ -121,15 +80,6 @@
 \usepackage{adjustbox}
 \setkeys{Gin}{width=\linewidth, keepaspectratio}
 
-% \newfontfamily\maplemonofont{MapleMono-NF-CN}[
-%     Path = C:/Users/Admin/AppData/Local/Microsoft/Windows/Fonts/,
-%     Extension = .ttf,
-%     UprightFont = *-Regular,
-%     BoldFont = *-Bold,
-%     ItalicFont = *-Italic,
-%     BoldItalicFont = *-BoldItalic
-% ]
-
 \newfontfamily\consolasfont{Consola}[
     Extension = .ttf,
     UprightFont = *,
@@ -138,34 +88,12 @@
     BoldItalicFont = *z
 ]
 
-% \lstset{
-%     basicstyle=\consolasfont,  % Changed to use Consolas
-%     % basicstyle=\maplemonofont\small,
-%     backgroundcolor=\color{bg},
-%     frame=single,
-%     framesep=1mm,
-%     rulecolor=\color{borderblue}, % Blue border
-%     numbers=left,
-%     numberstyle=\tiny\color{gray},
-%     keywordstyle=\color{blue},
-%     % commentstyle=\color{green},
-%     commentstyle=\color{commentcolor}\itshape,
-%     stringstyle=\color{red},
-%     showstringspaces=false,
-%     breaklines=true,  % Ensure lines break within margins
-%     breakatwhitespace=true, % Allow breaking at whitespace
-%     prebreak=\raisebox{0ex}[0ex][0ex]{\ensuremath{\hookleftarrow}},
-%     postbreak=\raisebox{0ex}[0ex][0ex]{\ensuremath{\hookrightarrow}},
-%     escapeinside={(*@}{@*)},
-%     literate={-}{{\textendash}}1
-% }
-
 \lstset{
-    basicstyle=\consolasfont\footnotesize,  % Changed to use Consolas
+    basicstyle=\consolasfont,  % Changed to use Consolas
     backgroundcolor=\color{bg},
-    lineskip=1.5pt,
+    lineskip=2pt,
     frame=single,
-    framesep=1mm,
+    framesep=1.5mm,
     rulecolor=\color{borderblue}, % Blue border
     numbers=left,
     numberstyle=\small\color{gray}, % Changed from \tiny to \small
@@ -182,12 +110,38 @@
     literate={-}{{\textendash}}1
 }
 
-
 \usepackage{etoolbox} % Add etoolbox package
 
 \makeatletter
 \g@addto@macro\texttt{\allowbreak}
 \makeatother
+
+% Custom blockquote environment for markdown quotes
+\newtcolorbox{pandocBlockQuote}{
+  enhanced,
+  breakable,
+  arc=0pt,
+  outer arc=0pt,
+  colback=white,
+  colframe=gray!30,
+  boxrule=0pt,
+  leftrule=3pt,
+  left=15pt,
+  right=5pt,
+  top=5pt,
+  bottom=5pt,
+  bottomrule=0pt,
+  toprule=0pt,
+  rightrule=0pt
+}
+
+% Connect pandoc's BlockQuote environment to our custom one
+\renewenvironment{quote}{\begin{pandocBlockQuote}}{\end{pandocBlockQuote}}
+
+% For direct pandoc integration
+\let\oldquote\quote
+\let\oldendquote\endquote
+\renewenvironment{quote}{\begin{pandocBlockQuote}}{\end{pandocBlockQuote}}
 
 \newcommand{\passthrough}[1]{#1}
 \newcommand{\pandocbounded}[1]{#1}
